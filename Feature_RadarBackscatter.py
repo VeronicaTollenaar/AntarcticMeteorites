@@ -88,7 +88,7 @@ radar_at_mets, radar_at_toclass = extractdata(
     'locations_toclass')
 
 #%% # extract data at exact finding locations
-slope_at_mets, slope_at_toclass = extractdata(
+radar_at_mets, radar_at_toclass = extractdata(
     radar_raw,
     'radarbackscatter_exactlocs',
     'radar',
