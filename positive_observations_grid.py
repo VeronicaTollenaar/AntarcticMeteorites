@@ -39,8 +39,16 @@ met_locs_reproj_gr.to_csv('../Data_Locations/locations_mets_abbrevs.csv',index=F
 
 #%%
 # Save with indexno for calculations in Earth Engine
+# reprojected observations
 met_locs_reproj_ee = met_locs_reproj_df.copy()
 met_locs_reproj_ee['indexno'] = np.linspace(0,
                                             len(met_locs_reproj_ee)-1,
                                             len(met_locs_reproj_ee))
 met_locs_reproj_ee.to_csv('../Data_Locations/locations_mets_EE.csv')
+
+# original observations
+met_locs_ee = met_locs[['new_x','new_y']].copy()
+met_locs_ee['indexno'] = np.linspace(0,
+                                     len(met_locs_ee)-1,
+                                     len(met_locs_ee))
+met_locs_reproj_ee.to_csv('../Data_Locations/locations_mets_exact_EE.csv')
