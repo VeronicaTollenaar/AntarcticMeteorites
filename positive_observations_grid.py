@@ -32,6 +32,8 @@ met_locs_reproj_df['abbrevs']=met_locs.abbrevs.values
 #%%
 # count duplicates and create new array with unique coordinates, fieldsite and number of meteorites per gridcell ('counts')
 met_locs_reproj_gr = met_locs_reproj_df.groupby(['x','y','abbrevs']).size().reset_index(name='counts')
+# drop values with identical coordinates but different field sites
+met_locs_reproj_gr = met_locs_reproj_gr.drop(met_locs_reproj_gr[met_locs_reproj_gr.duplicated(['x','y'])].index)
 
 # save as csv (with and without field sites)
 met_locs_reproj_gr[['x','y','counts']].to_csv('../Data_Locations/locations_mets.csv',index=False)
