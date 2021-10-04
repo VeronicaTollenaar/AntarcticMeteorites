@@ -1,13 +1,8 @@
 # import packages
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.ticker import LogFormatter 
-from matplotlib import colors
 import xarray as xr
 import os
 import pandas as pd
-import rasterio
-from rasterio import features
 
 # set working directory
 path = os.path.dirname(os.path.abspath(__file__))
@@ -41,3 +36,11 @@ met_locs_reproj_gr = met_locs_reproj_df.groupby(['x','y','abbrevs']).size().rese
 # save as csv (with and without field sites)
 met_locs_reproj_gr[['x','y','counts']].to_csv('../Data_Locations/locations_mets.csv',index=False)
 met_locs_reproj_gr.to_csv('../Data_Locations/locations_mets_abbrevs.csv',index=False)
+
+#%%
+# Save with indexno for calculations in Earth Engine
+met_locs_reproj_ee = met_locs_reproj_df.copy()
+met_locs_reproj_ee['indexno'] = np.linspace(0,
+                                            len(met_locs_reproj_ee)-1,
+                                            len(met_locs_reproj_ee))
+met_locs_reproj_ee.to_csv('../Data_Locations/locations_mets_EE.csv')
