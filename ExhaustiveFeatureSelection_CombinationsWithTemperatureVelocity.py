@@ -34,7 +34,7 @@ def exhaustive_feature_selection(
         ): 
 
     # create folder to save results
-    os.mkdir('Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg)
+    os.mkdir('../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg)
     
     # open labelled data
     f1_radar_mets = pd.read_csv('../Data_Features/radarbackscatter_at_mets.csv')
