@@ -11,7 +11,7 @@ os.chdir(path)
 #%%
 ## read/prepare data
 # define selected definition of slope and surface temperature
-combinations_slope_stemp = [['slope2km','stempPERC99']]
+combinations_slope_stemp = [['slope5km','stempPERC99']]
 # define first part of name of folder with results
 foldername_part1 = combinations_slope_stemp[0][0] + combinations_slope_stemp[0][1]
 
@@ -20,7 +20,10 @@ def read_aucs(neg):
     # compose list of files that contain AUCs in folder of analyses with temperature and velocity (TemperatureVelocity)
     listfiles_TV = os.listdir('../Results/'+foldername_part1+neg)
     # compose list of files that contain AUCs in folder of analyses all other combinations (AllCombinations)
-    listfiles_AC = os.listdir('../Results/'+foldername_part1+neg+'_AllCombinations')
+    try:
+        listfiles_AC = os.listdir('../Results/'+foldername_part1+neg+'_AllCombinations')
+    except FileNotFoundError:
+        listfiles_AC = []
     
     # loop through all files that contain "AUCs" in both directories
     # select files that contain "AUCs" in listfiles_TV
