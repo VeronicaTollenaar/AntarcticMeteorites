@@ -161,7 +161,7 @@ def exhaustive_feature_selection(
             data_toclass_nopos = data_toclass_df[
                                 (np.isnan(merged_all_pos.pos))
                                 ].drop(['pos'],axis=1)
-            # sample random test data
+            # sample random validation data
             random_neg = data_toclass_nopos.sample(9000,random_state=10)
             test_random_neg = random_neg.copy()
             random_neg['neg']=1
@@ -209,7 +209,7 @@ def exhaustive_feature_selection(
         xy_test_neg  = np.array(pcs_test_neg_st[:,0:pcmax].tolist()).squeeze()
         testscores_neg_unlab = np.exp(kde_unlab.score_samples(xy_test_neg))
        
-        # for every set of positive test data
+        # for every set of positive validation data
         for b in range(0,10): #range(len(FSs)) 
             # define positive validation data (test_pos)
             if FSs[b]=='rest':
@@ -259,7 +259,7 @@ def exhaustive_feature_selection(
             bw_lab = grid.best_params_['bandwidth']
             kde_lab = KernelDensity(bandwidth=bw_lab).fit(xy_train_lab)
     
-            # score test data (testscores_neg_unlab is already done before the loop)
+            # score validation data (testscores_neg_unlab is already done before the loop)
             xy_test_pos  = np.array(pcs_test_pos_st[:,0:pcmax].tolist()).squeeze()
             testscores_pos_lab = np.exp(kde_lab.score_samples(xy_test_pos))
             testscores_neg_lab = np.exp(kde_lab.score_samples(xy_test_neg))

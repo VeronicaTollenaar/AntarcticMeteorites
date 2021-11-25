@@ -26,7 +26,7 @@ locs_mets = pd.read_csv(
     '../Data_Locations/locations_mets_EE.csv')
 locs_mets_exact = pd.read_csv(
     '../Data_Locations/locations_mets_exact_EE.csv')
-
+#%%
 # merge temperature data with location data
 stemp_at_toclass = pd.merge(locs_toclass, stemp_at_toclass_unsorted, on='indexno')
 stemp_at_mets = pd.merge(locs_mets, stemp_at_mets_unsorted, on='indexno')
@@ -35,13 +35,15 @@ stemp_at_mets_exact = pd.merge(locs_mets_exact, stemp_at_mets_exact_unsorted, on
 # drop unnecessary columns
 stemp_at_toclass = stemp_at_toclass[['x','y','last']]
 stemp_at_mets = stemp_at_mets[['x','y','last']]
-stemp_at_mets_exact = stemp_at_mets_exact[['x','y','last']]
+stemp_at_mets_exact = stemp_at_mets_exact[['new_x_y','new_y_y','last']]
 
 
 # rename columns
 stemp_at_toclass = stemp_at_toclass.rename(columns={"last": "stemp"})
 stemp_at_mets = stemp_at_mets.rename(columns={"last": "stemp"})
-stemp_at_mets_exact = stemp_at_mets_exact.rename(columns={"last": "stemp"})
+stemp_at_mets_exact = stemp_at_mets_exact.rename(columns={"last": "stemp",
+                                                          "new_x_y": "x",
+                                                          "new_y_y": "y"})
 
 # drop nans
 stemp_at_toclass = stemp_at_toclass.dropna()
@@ -51,7 +53,7 @@ stemp_at_toclass.stemp = (stemp_at_toclass.stemp*0.02)-273.15
 stemp_at_mets.stemp = (stemp_at_mets.stemp*0.02)-273.15
 stemp_at_mets_exact.stemp = (stemp_at_mets_exact.stemp*0.02)-273.15
 
-
+#%%
 # export data
 name = 'stempPERC'+perc
 stemp_at_toclass.to_csv('../Data_Features/'+name+'_at_toclass.csv',

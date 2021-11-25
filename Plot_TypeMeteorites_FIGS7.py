@@ -12,7 +12,7 @@ os.chdir(path)
 
 #%%
 # import meteorite table
-mets = pd.read_csv('../Data_raw/meteorite_locations_raw.csv', low_memory=False)
+mets = pd.read_csv('../Data_raw/meteorite_types.csv', low_memory=False)
 # group data by Type
 types = mets.groupby('Type',as_index=False).count()
 

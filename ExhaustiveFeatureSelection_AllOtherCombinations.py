@@ -37,12 +37,12 @@ def exhaustive_feature_selection(
     os.mkdir('../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations')
     
     # open labelled data
-    f1_radar_mets = pd.read_csv('Data_Features/radarbackscatter_at_mets.csv')
-    f2_speed_mets = pd.read_csv('Data_Features/velocities_at_mets.csv')
-    f3_iceth_mets = pd.read_csv('Data_Features/icethickness_at_mets.csv')
-    f4_slope_mets = pd.read_csv('Data_Features/'+slope_and_stemp[0]+'_at_mets.csv')
-    f5_stemp_mets = pd.read_csv('Data_Features/'+slope_and_stemp[1]+'_at_mets.csv')
-    f6_disto_mets = pd.read_csv('Data_Features/distanceoutcrops_at_mets.csv')
+    f1_radar_mets = pd.read_csv('../Data_Features/radarbackscatter_at_mets.csv')
+    f2_speed_mets = pd.read_csv('../Data_Features/velocities_at_mets.csv')
+    f3_iceth_mets = pd.read_csv('../Data_Features/icethickness_at_mets.csv')
+    f4_slope_mets = pd.read_csv('../Data_Features/'+slope_and_stemp[0]+'_at_mets.csv')
+    f5_stemp_mets = pd.read_csv('../Data_Features/'+slope_and_stemp[1]+'_at_mets.csv')
+    f6_disto_mets = pd.read_csv('../Data_Features/distanceoutcrops_at_mets.csv')
     
     # merge data
     data_mets = f1_radar_mets.merge(
@@ -61,12 +61,12 @@ def exhaustive_feature_selection(
         f6_disto_mets)
     
     # open unlabelled data
-    f1_radar_toclass = pd.read_csv('Data_Features/radarbackscatter_at_toclass.csv')
-    f2_speed_toclass = pd.read_csv('Data_Features/velocities_at_toclass.csv')
-    f3_iceth_toclass = pd.read_csv('Data_Features/icethickness_at_toclass.csv')
-    f4_slope_toclass = pd.read_csv('Data_Features/'+slope_and_stemp[0]+'_at_toclass.csv')
-    f5_stemp_toclass = pd.read_csv('Data_Features/'+slope_and_stemp[1]+'_at_toclass.csv')
-    f6_disto_toclass = pd.read_csv('Data_Features/distanceoutcrops_at_toclass.csv')
+    f1_radar_toclass = pd.read_csv('../Data_Features/radarbackscatter_at_toclass.csv')
+    f2_speed_toclass = pd.read_csv('../Data_Features/velocities_at_toclass.csv')
+    f3_iceth_toclass = pd.read_csv('../Data_Features/icethickness_at_toclass.csv')
+    f4_slope_toclass = pd.read_csv('../Data_Features/'+slope_and_stemp[0]+'_at_toclass.csv')
+    f5_stemp_toclass = pd.read_csv('../Data_Features/'+slope_and_stemp[1]+'_at_toclass.csv')
+    f6_disto_toclass = pd.read_csv('../Data_Features/distanceoutcrops_at_toclass.csv')
     
     # merge data
     data_toclass = f1_radar_toclass.merge(
@@ -117,7 +117,7 @@ def exhaustive_feature_selection(
     
     # read in abbreviations of meteorite recovery locations
     locs_mets = pd.read_csv(
-            '../Afstuderen/Data/Grid/metlocs_as_grid_abbrevs.csv')[[
+            '../Data_Locations/locations_mets_abbrevs.csv')[[
             'x','y','abbrevs','counts']]
     data_mets_locs = data_mets_transf.merge(locs_mets)
     # define names of 9 largest fieldsites
@@ -141,7 +141,7 @@ def exhaustive_feature_selection(
         # define specific negative validation data ("test_neg") for two scenarios:
         # 1. negative validation data (SpecNeg), 2. random validation data (RandNeg)
         if neg == 'SpecNeg':
-            specific_neg = pd.read_csv('../Afstuderen/Data/Testdata/test_neg5_v2.csv')
+            specific_neg = pd.read_csv('../Data_Locations/validation_neg.csv')
             # ensure negative validation data is subset of unlabelled data
             # exclude positive observations from negative validation data
             merged_specific_neg = merged_all_pos.merge(specific_neg, how='outer')
@@ -157,9 +157,11 @@ def exhaustive_feature_selection(
         # define random negative validation data
         if neg == 'RandNeg':
             data_toclass_df = pd.DataFrame(merged_all_pos)
+            # exclude positive observations from all observations
             data_toclass_nopos = data_toclass_df[
                                 (np.isnan(merged_all_pos.pos))
                                 ].drop(['pos'],axis=1)
+            # sample random validation data
             random_neg = data_toclass_nopos.sample(9000,random_state=10)
             test_random_neg = random_neg.copy()
             random_neg['neg']=1
@@ -220,9 +222,9 @@ def exhaustive_feature_selection(
             xy_test_neg  = np.array(pcs_test_neg_st[:,0:pcmax].tolist()).squeeze().reshape(-1,1)
         testscores_neg_unlab = np.exp(kde_unlab.score_samples(xy_test_neg))
        
-        # for every set of positive test data
+        # for every set of positive validation data
         for b in range(0,10): #range(len(FSs)) 
-            # define positive test data
+            # define positive validation data
             if FSs[b]=='rest':
                 test_pos = data_mets[(data_mets.abbrevs!='QUE') &
                                   (data_mets.abbrevs!='MIL') &
@@ -280,7 +282,7 @@ def exhaustive_feature_selection(
             bw_lab = grid.best_params_['bandwidth']
             kde_lab = KernelDensity(bandwidth=bw_lab).fit(xy_train_lab)
     
-            # score test data (testscores_neg_unlab is already done before the loop)
+            # score validation data (testscores_neg_unlab is already done before the loop)
              # ensure input data is in the right shape for the KDE
             if pcmax > 1:
                 xy_test_pos  = np.array(pcs_test_pos_st[:,0:pcmax].tolist()).squeeze()
@@ -321,7 +323,7 @@ def exhaustive_feature_selection(
             
             # save values of ROC curve in folder
             ROCvals2 = pd.DataFrame({'cost': cost, 'TPrate2': TPrate2, 'FPrate2': FPrate2})
-            ROCvals2.to_csv('Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_values_CrossValidation_'+FSs[b]+'_'+version+'.csv',
+            ROCvals2.to_csv('../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_values_CrossValidation_'+FSs[b]+'_'+version+'.csv',
                             index=False)
                 
     ## loop over combinations of features
@@ -371,7 +373,7 @@ def exhaustive_feature_selection(
                 for b in range(len(FSs)):
                     # read in ROCs
                     ROC_imp2 = pd.read_csv(
-                        'Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_values_CrossValidation_'+FSs[b]+'_'+version+'.csv')
+                        '../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_values_CrossValidation_'+FSs[b]+'_'+version+'.csv')
                     # save false positive and true positive values as columns of arrays
                     ROC_allFP2[:,b] = ROC_imp2['FPrate2'].values
                     ROC_allTP2[:,b] = ROC_imp2['TPrate2'].values
@@ -403,7 +405,7 @@ def exhaustive_feature_selection(
                 ROC_average = pd.DataFrame({'cost': cost,
                                             'TruePositive_average': TruePositive_average,
                                             'FalsePositive_average': FalsePositive_average})
-                ROC_average.to_csv('Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_average_'+version+'.csv',
+                ROC_average.to_csv('../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/ROC_average_'+version+'.csv',
                                    index=False)
                 # apppend 0,0 and 1,1 to weighted average ROC curve to calculate the auc
                 ROC_average_added = pd.concat([pd.DataFrame([
@@ -418,5 +420,5 @@ def exhaustive_feature_selection(
                                        ROC_average_added.TruePositive_average)
                 # save values of AUCs
                 aucs_df[feature_combination_filename] = aucs
-            aucs_df.to_csv('Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/AUCs_' + 
+            aucs_df.to_csv('../Results/'+slope_and_stemp[0]+slope_and_stemp[1]+neg+'_AllCombinations/AUCs_' + 
                            str(n_pcs) + 'pcs' + str(n_features) + 'fs.csv')

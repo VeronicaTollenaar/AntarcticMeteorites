@@ -80,12 +80,12 @@ elevation_raw = xr.Dataset({
                coords={"x": elevation_masked.x.values, 
                        "y": elevation_masked.y.values})
 # save dataset as nc
-#elevation_raw.to_netcdf('Raw_data/elevation_masked_filtered_sizefilter.nc')
+#elevation_raw.to_netcdf('../Data_raw/elevation_masked_filtered_sizefilter.nc')
 # delete unnecessary variables
 del(elevation_masked, footprint, mid, radius, elevation_filtered, i, j)
 #%%
 # if skipping cell 1 - 3: open netcdf
-#elevation_raw = xr.open_dataset('Raw_data/elevation_masked_filtered15.nc')
+#elevation_raw = xr.open_dataset('../Data_raw/elevation_masked_filtered15.nc')
 
 # calculate maximum slope
 slope_x = elevation_raw.differentiate('x')

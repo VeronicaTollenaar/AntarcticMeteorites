@@ -11,7 +11,7 @@ os.chdir(path)
 #%%
 ## read/prepare data
 # define selected definition of slope and surface temperature
-combinations_slope_stemp = [['slope5km','stempPERC99']]
+combinations_slope_stemp = [['slope2km','stempPERC99']]
 # define first part of name of folder with results
 foldername_part1 = combinations_slope_stemp[0][0] + combinations_slope_stemp[0][1]
 
