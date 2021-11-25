@@ -1,4 +1,4 @@
-Folder structure:
+## Folder structure:
 - ../Data_raw: contains the raw datasets as downloaded from their respective repositories
 - ../Data_Locations: contains the locations of positive and unlabeled observations
 - ../Data_Features: folder to save the values of the respective features, as xxx_at_mets.csv for positive observations and xxx_at_toclass.csv for unlabelled observations. Also contains a folder Missing_Values, where a xxxnans.csv can be saved to inspect the spatial distribution of missing values
@@ -6,19 +6,19 @@ Folder structure:
 - ../Figures: folder to save Figures of plotted data
 
 
-Additional files:
--bias_above200m1kmbuff_expanded_dissolved: shapefile of polygons of unlabelled observations
--meteorite_locations_raw.csv: contains locations of meteorite finds as defined in the meteoritical bulletin consulted on 05/07/2019
--meteorite_types.csv: contains meteorite names and types as defined in the meteoritical bulletin consulted on 05/07/2019
--validation_neg.csv: contains locations of negative observations used for validation
--TEST_neg.csv: contains locations of negative test observations
--TEST_pos.csv: contains locations of positive test obesrvations
--MSZs_ranked: shapefile of ranked meteorite stranding zones
--Test_neg4326: shapefile of locations used as negative test data
--Cal_neg4326: shapefile of locations used as negative calibration/validation data
--TestMSZs_pos4326: shapefile of locations used as positive test data in MSZ-level assesment
--613MSZs: shapefile of outlines of meteorite stranding zones
--positive_classified.nc: netcdf of positive classified observations with their estimated a posteriori probabilities
+## Additional files:
+- bias_above200m1kmbuff_expanded_dissolved: shapefile of polygons of unlabelled observations
+- meteorite_locations_raw.csv: contains locations of meteorite finds as defined in the meteoritical bulletin consulted on 05/07/2019
+- meteorite_types.csv: contains meteorite names and types as defined in the meteoritical bulletin consulted on 05/07/2019
+- validation_neg.csv: contains locations of negative observations used for validation
+- TEST_neg.csv: contains locations of negative test observations
+- TEST_pos.csv: contains locations of positive test obesrvations
+- MSZs_ranked: shapefile of ranked meteorite stranding zones
+- Test_neg4326: shapefile of locations used as negative test data
+- Cal_neg4326: shapefile of locations used as negative calibration/validation data
+- TestMSZs_pos4326: shapefile of locations used as positive test data in MSZ-level assesment
+- 613MSZs: shapefile of outlines of meteorite stranding zones
+- positive_classified.nc: netcdf of positive classified observations with their estimated a posteriori probabilities
 
 
 ## Scipts to extract locations of observations
