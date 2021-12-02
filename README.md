@@ -1,3 +1,7 @@
+Cite the code: 
+
+[![DOI](https://zenodo.org/badge/412406830.svg)](https://zenodo.org/badge/latestdoi/412406830)
+
 ## Folder structure:
 - ../Data_raw: contains the raw datasets as downloaded from their respective repositories
 - ../Data_Locations: contains the locations of positive and unlabeled observations
